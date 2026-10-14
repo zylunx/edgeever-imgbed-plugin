@@ -1,0 +1,103 @@
+/* EdgeEver 图床迁移插件 - 面板样式（尽量中性，适配明暗主题） */
+.ee-imgbed-root {
+  font: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.ee-imgbed-root *,
+.ee-imgbed-root *::before,
+.ee-imgbed-root *::after {
+  box-sizing: inherit;
+}
+
+.ee-imgbed-card {
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.ee-imgbed-card-title {
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.ee-imgbed-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.ee-imgbed-btn {
+  font: inherit;
+  padding: 4px 10px;
+  border: 1px solid rgba(127, 127, 127, 0.45);
+  border-radius: 6px;
+  background: rgba(127, 127, 127, 0.12);
+  color: inherit;
+  cursor: pointer;
+}
+
+.ee-imgbed-btn:hover:not(:disabled) {
+  background: rgba(127, 127, 127, 0.22);
+}
+
+.ee-imgbed-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ee-imgbed-input,
+.ee-imgbed-select {
+  font: inherit;
+  padding: 4px 8px;
+  border: 1px solid rgba(127, 127, 127, 0.45);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  max-width: 100%;
+}
+
+.ee-imgbed-status {
+  font-size: 12px;
+  opacity: 0.85;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+.ee-imgbed-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.ee-imgbed-table th,
+.ee-imgbed-table td {
+  border-bottom: 1px solid rgba(127, 127, 127, 0.25);
+  padding: 4px 6px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.ee-imgbed-table th {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.ee-imgbed-url {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.ee-imgbed-muted {
+  opacity: 0.65;
+  font-size: 12px;
+}

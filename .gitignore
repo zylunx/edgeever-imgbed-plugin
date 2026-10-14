@@ -1,0 +1,16 @@
+# 依赖（通过 junction 联接至受管 workspace，不入库）
+node_modules/
+
+# 构建缓存
+*.tsbuildinfo
+.esbuildcache/
+
+# 编辑器与系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+npm-debug.log*

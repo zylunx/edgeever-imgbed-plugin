@@ -1,0 +1,16 @@
+{
+  "name": "edgeever-imgbed-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EdgeEver 插件：将笔记图片上传到 CloudFlare ImgBed 图床并替换为 Markdown 外链",
+  "scripts": {
+    "build": "node node_modules/esbuild/bin/esbuild src/index.ts --bundle --format=esm --target=es2022 --outfile=main.js",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json",
+    "test": "node test/smoke.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "typescript": "^5.0.0"
+  }
+}

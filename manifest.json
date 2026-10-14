@@ -1,0 +1,106 @@
+{
+  "type": "plugin",
+  "id": "com.zylunx.edgeever-imgbed",
+  "name": "ImgBed Migrator",
+  "version": "1.0.0",
+  "apiVersion": "2",
+  "settingsUi": "host",
+  "description": "Upload images from EdgeEver notes to a CloudFlare ImgBed instance and replace local references with Markdown URLs.",
+  "locales": {
+    "zh-CN": {
+      "name": "图床迁移",
+      "description": "将 EdgeEver 笔记中的图片上传到 CloudFlare ImgBed 图床，并把本地图片引用替换为 Markdown 外链。"
+    }
+  },
+  "entry": "./main.js",
+  "platforms": ["web", "desktop"],
+  "permissions": [
+    "notes:read",
+    "notes:write",
+    "resources:read",
+    "resources:write",
+    "editor:read",
+    "editor:write",
+    "ui:commands",
+    "ui:panels",
+    "ui:notices",
+    "network",
+    "storage"
+  ],
+  "settings": {
+    "fields": [
+      { "key": "endpoint", "type": "text", "label": "图床站点地址", "required": true },
+      {
+        "key": "authMode",
+        "type": "select",
+        "label": "鉴权方式",
+        "default": "token",
+        "options": [
+          { "value": "token", "label": "API Token（Bearer）" },
+          { "value": "authCode", "label": "上传认证码" },
+          { "value": "none", "label": "无鉴权（图床未开启上传认证）" }
+        ]
+      },
+      { "key": "apiToken", "type": "secret", "label": "API Token（需 upload 权限）" },
+      { "key": "authCode", "type": "secret", "label": "上传认证码" },
+      {
+        "key": "returnFormat",
+        "type": "select",
+        "label": "返回链接格式",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "完整链接" },
+          { "value": "default", "label": "/file/ 路径（自动拼接站点地址）" }
+        ]
+      },
+      {
+        "key": "uploadChannel",
+        "type": "select",
+        "label": "上传渠道",
+        "default": "",
+        "options": [
+          { "value": "", "label": "默认（telegram）" },
+          { "value": "telegram", "label": "telegram" },
+          { "value": "cfr2", "label": "cfr2" },
+          { "value": "s3", "label": "s3" },
+          { "value": "discord", "label": "discord" },
+          { "value": "huggingface", "label": "huggingface" },
+          { "value": "webdav", "label": "webdav" }
+        ]
+      },
+      { "key": "channelName", "type": "text", "label": "渠道名称（可选，多渠道场景）" },
+      {
+        "key": "uploadNameType",
+        "type": "select",
+        "label": "文件命名方式",
+        "default": "default",
+        "options": [
+          { "value": "default", "label": "default（前缀_原名）" },
+          { "value": "index", "label": "index（仅前缀）" },
+          { "value": "origin", "label": "origin（仅原名）" },
+          { "value": "short", "label": "short（短链接）" }
+        ]
+      },
+      { "key": "uploadFolder", "type": "text", "label": "上传目录（相对路径）", "default": "edgeever" },
+      { "key": "serverCompress", "type": "boolean", "label": "服务端压缩（仅 Telegram 渠道生效）", "default": true },
+      { "key": "autoUploadOnSave", "type": "boolean", "label": "保存后自动上传并替换本地图片", "default": false },
+      {
+        "key": "autoUploadScope",
+        "type": "select",
+        "label": "自动上传范围",
+        "default": "current",
+        "options": [
+          { "value": "current", "label": "仅当前编辑的笔记" },
+          { "value": "all", "label": "所有发生更新的笔记" }
+        ]
+      },
+      { "key": "deleteLocalAfterUpload", "type": "boolean", "label": "替换成功后删除 EdgeEver 本地资源", "default": false },
+      { "key": "syncDeleteRemote", "type": "boolean", "label": "删除本地资源时同步删除图床文件（需 delete 权限）", "default": false },
+      { "key": "backupBeforeReplace", "type": "boolean", "label": "替换前自动备份笔记原文", "default": true },
+      { "key": "localRefPattern", "type": "text", "label": "本地图片引用识别规则（正则，留空自动识别）" },
+      { "key": "markdownTemplate", "type": "text", "label": "Markdown 链接模板", "default": "![{alt}]({url})" },
+      { "key": "maxFileSizeMB", "type": "text", "label": "单文件大小上限（MB，0 表示不限制）", "default": "20" },
+      { "key": "includeNonImages", "type": "boolean", "label": "同时上传非图片附件", "default": false }
+    ]
+  }
+}
