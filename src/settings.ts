@@ -65,6 +65,14 @@ function asNumber(v: unknown, dflt: number): number {
 }
 
 /**
+ * 把 manifest 中的上传渠道选项归一化：图床默认渠道在 UI 上以 "default" 表示，
+ * 实际请求时不发送 uploadChannel 参数（=图床默认的 telegram）。
+ */
+function normalizeChannel(v: string): string {
+  return v && v !== "default" ? v : "";
+}
+
+/**
  * 从宿主读取插件设置。任何读取失败都回退到默认值，保证插件不会因为设置问题而崩溃。
  * 注意：manifest 中的设置 key 使用 kebab-case（如 auth-mode），这里读取时须保持一致。
  */
@@ -87,7 +95,7 @@ export async function loadSettings(ctx: PluginContext): Promise<ImgbedSettings> 
     apiToken: asString(await get("api-token"), "").trim(),
     authCode: asString(await get("auth-code"), "").trim(),
     returnFormat: returnFormatRaw === "default" ? "default" : "full",
-    uploadChannel: asString(await get("upload-channel"), "").trim(),
+    uploadChannel: normalizeChannel(asString(await get("upload-channel"), "default").trim()),
     channelName: asString(await get("channel-name"), "").trim(),
     uploadNameType: asString(await get("upload-name-type"), SETTINGS_DEFAULTS.uploadNameType).trim(),
     uploadFolder: asString(await get("upload-folder"), SETTINGS_DEFAULTS.uploadFolder).trim(),

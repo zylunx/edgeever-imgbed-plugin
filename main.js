@@ -35,6 +35,9 @@ function asNumber(v, dflt) {
   const n = typeof v === "number" ? v : Number.parseFloat(String(v ?? ""));
   return Number.isFinite(n) ? n : dflt;
 }
+function normalizeChannel(v) {
+  return v && v !== "default" ? v : "";
+}
 async function loadSettings(ctx) {
   const get = async (key) => {
     try {
@@ -52,7 +55,7 @@ async function loadSettings(ctx) {
     apiToken: asString(await get("api-token"), "").trim(),
     authCode: asString(await get("auth-code"), "").trim(),
     returnFormat: returnFormatRaw === "default" ? "default" : "full",
-    uploadChannel: asString(await get("upload-channel"), "").trim(),
+    uploadChannel: normalizeChannel(asString(await get("upload-channel"), "default").trim()),
     channelName: asString(await get("channel-name"), "").trim(),
     uploadNameType: asString(await get("upload-name-type"), SETTINGS_DEFAULTS.uploadNameType).trim(),
     uploadFolder: asString(await get("upload-folder"), SETTINGS_DEFAULTS.uploadFolder).trim(),

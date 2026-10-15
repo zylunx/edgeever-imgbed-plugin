@@ -57,9 +57,9 @@
         "key": "upload-channel",
         "type": "select",
         "label": "上传渠道",
-        "default": "",
+        "default": "default",
         "options": [
-          { "value": "", "label": "默认（telegram）" },
+          { "value": "default", "label": "默认（telegram）" },
           { "value": "telegram", "label": "telegram" },
           { "value": "cfr2", "label": "cfr2" },
           { "value": "s3", "label": "s3" },
