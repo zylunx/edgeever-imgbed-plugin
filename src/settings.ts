@@ -66,6 +66,7 @@ function asNumber(v: unknown, dflt: number): number {
 
 /**
  * 从宿主读取插件设置。任何读取失败都回退到默认值，保证插件不会因为设置问题而崩溃。
+ * 注意：manifest 中的设置 key 使用 kebab-case（如 auth-mode），这里读取时须保持一致。
  */
 export async function loadSettings(ctx: PluginContext): Promise<ImgbedSettings> {
   const get = async (key: string): Promise<unknown> => {
@@ -76,30 +77,30 @@ export async function loadSettings(ctx: PluginContext): Promise<ImgbedSettings> 
     }
   };
 
-  const authModeRaw = asString(await get("authMode"), SETTINGS_DEFAULTS.authMode);
-  const returnFormatRaw = asString(await get("returnFormat"), SETTINGS_DEFAULTS.returnFormat);
-  const scopeRaw = asString(await get("autoUploadScope"), SETTINGS_DEFAULTS.autoUploadScope);
+  const authModeRaw = asString(await get("auth-mode"), SETTINGS_DEFAULTS.authMode);
+  const returnFormatRaw = asString(await get("return-format"), SETTINGS_DEFAULTS.returnFormat);
+  const scopeRaw = asString(await get("auto-upload-scope"), SETTINGS_DEFAULTS.autoUploadScope);
 
   return {
     endpoint: asString(await get("endpoint"), "").trim().replace(/\/+$/, ""),
     authMode: authModeRaw === "authCode" || authModeRaw === "none" ? authModeRaw : "token",
-    apiToken: asString(await get("apiToken"), "").trim(),
-    authCode: asString(await get("authCode"), "").trim(),
+    apiToken: asString(await get("api-token"), "").trim(),
+    authCode: asString(await get("auth-code"), "").trim(),
     returnFormat: returnFormatRaw === "default" ? "default" : "full",
-    uploadChannel: asString(await get("uploadChannel"), "").trim(),
-    channelName: asString(await get("channelName"), "").trim(),
-    uploadNameType: asString(await get("uploadNameType"), SETTINGS_DEFAULTS.uploadNameType).trim(),
-    uploadFolder: asString(await get("uploadFolder"), SETTINGS_DEFAULTS.uploadFolder).trim(),
-    serverCompress: asBool(await get("serverCompress"), SETTINGS_DEFAULTS.serverCompress),
-    autoUploadOnSave: asBool(await get("autoUploadOnSave"), SETTINGS_DEFAULTS.autoUploadOnSave),
+    uploadChannel: asString(await get("upload-channel"), "").trim(),
+    channelName: asString(await get("channel-name"), "").trim(),
+    uploadNameType: asString(await get("upload-name-type"), SETTINGS_DEFAULTS.uploadNameType).trim(),
+    uploadFolder: asString(await get("upload-folder"), SETTINGS_DEFAULTS.uploadFolder).trim(),
+    serverCompress: asBool(await get("server-compress"), SETTINGS_DEFAULTS.serverCompress),
+    autoUploadOnSave: asBool(await get("auto-upload-on-save"), SETTINGS_DEFAULTS.autoUploadOnSave),
     autoUploadScope: scopeRaw === "all" ? "all" : "current",
-    deleteLocalAfterUpload: asBool(await get("deleteLocalAfterUpload"), SETTINGS_DEFAULTS.deleteLocalAfterUpload),
-    syncDeleteRemote: asBool(await get("syncDeleteRemote"), SETTINGS_DEFAULTS.syncDeleteRemote),
-    backupBeforeReplace: asBool(await get("backupBeforeReplace"), SETTINGS_DEFAULTS.backupBeforeReplace),
-    localRefPattern: asString(await get("localRefPattern"), "").trim(),
-    markdownTemplate: asString(await get("markdownTemplate"), SETTINGS_DEFAULTS.markdownTemplate),
-    maxFileSizeMB: asNumber(await get("maxFileSizeMB"), SETTINGS_DEFAULTS.maxFileSizeMB),
-    includeNonImages: asBool(await get("includeNonImages"), SETTINGS_DEFAULTS.includeNonImages),
+    deleteLocalAfterUpload: asBool(await get("delete-local-after-upload"), SETTINGS_DEFAULTS.deleteLocalAfterUpload),
+    syncDeleteRemote: asBool(await get("sync-delete-remote"), SETTINGS_DEFAULTS.syncDeleteRemote),
+    backupBeforeReplace: asBool(await get("backup-before-replace"), SETTINGS_DEFAULTS.backupBeforeReplace),
+    localRefPattern: asString(await get("local-ref-pattern"), "").trim(),
+    markdownTemplate: asString(await get("markdown-template"), SETTINGS_DEFAULTS.markdownTemplate),
+    maxFileSizeMB: asNumber(await get("max-file-size-mb"), SETTINGS_DEFAULTS.maxFileSizeMB),
+    includeNonImages: asBool(await get("include-non-images"), SETTINGS_DEFAULTS.includeNonImages),
   };
 }
 

@@ -31,7 +31,7 @@
     "fields": [
       { "key": "endpoint", "type": "text", "label": "图床站点地址", "required": true },
       {
-        "key": "authMode",
+        "key": "auth-mode",
         "type": "select",
         "label": "鉴权方式",
         "default": "token",
@@ -41,10 +41,10 @@
           { "value": "none", "label": "无鉴权（图床未开启上传认证）" }
         ]
       },
-      { "key": "apiToken", "type": "secret", "label": "API Token（需 upload 权限）" },
-      { "key": "authCode", "type": "secret", "label": "上传认证码" },
+      { "key": "api-token", "type": "secret", "label": "API Token（需 upload 权限）" },
+      { "key": "auth-code", "type": "secret", "label": "上传认证码" },
       {
-        "key": "returnFormat",
+        "key": "return-format",
         "type": "select",
         "label": "返回链接格式",
         "default": "full",
@@ -54,7 +54,7 @@
         ]
       },
       {
-        "key": "uploadChannel",
+        "key": "upload-channel",
         "type": "select",
         "label": "上传渠道",
         "default": "",
@@ -68,9 +68,9 @@
           { "value": "webdav", "label": "webdav" }
         ]
       },
-      { "key": "channelName", "type": "text", "label": "渠道名称（可选，多渠道场景）" },
+      { "key": "channel-name", "type": "text", "label": "渠道名称（可选，多渠道场景）" },
       {
-        "key": "uploadNameType",
+        "key": "upload-name-type",
         "type": "select",
         "label": "文件命名方式",
         "default": "default",
@@ -81,11 +81,11 @@
           { "value": "short", "label": "short（短链接）" }
         ]
       },
-      { "key": "uploadFolder", "type": "text", "label": "上传目录（相对路径）", "default": "edgeever" },
-      { "key": "serverCompress", "type": "boolean", "label": "服务端压缩（仅 Telegram 渠道生效）", "default": true },
-      { "key": "autoUploadOnSave", "type": "boolean", "label": "保存后自动上传并替换本地图片", "default": false },
+      { "key": "upload-folder", "type": "text", "label": "上传目录（相对路径）", "default": "edgeever" },
+      { "key": "server-compress", "type": "boolean", "label": "服务端压缩（仅 Telegram 渠道生效）", "default": true },
+      { "key": "auto-upload-on-save", "type": "boolean", "label": "保存后自动上传并替换本地图片", "default": false },
       {
-        "key": "autoUploadScope",
+        "key": "auto-upload-scope",
         "type": "select",
         "label": "自动上传范围",
         "default": "current",
@@ -94,13 +94,13 @@
           { "value": "all", "label": "所有发生更新的笔记" }
         ]
       },
-      { "key": "deleteLocalAfterUpload", "type": "boolean", "label": "替换成功后删除 EdgeEver 本地资源", "default": false },
-      { "key": "syncDeleteRemote", "type": "boolean", "label": "删除本地资源时同步删除图床文件（需 delete 权限）", "default": false },
-      { "key": "backupBeforeReplace", "type": "boolean", "label": "替换前自动备份笔记原文", "default": true },
-      { "key": "localRefPattern", "type": "text", "label": "本地图片引用识别规则（正则，留空自动识别）" },
-      { "key": "markdownTemplate", "type": "text", "label": "Markdown 链接模板", "default": "![{alt}]({url})" },
-      { "key": "maxFileSizeMB", "type": "text", "label": "单文件大小上限（MB，0 表示不限制）", "default": "20" },
-      { "key": "includeNonImages", "type": "boolean", "label": "同时上传非图片附件", "default": false }
+      { "key": "delete-local-after-upload", "type": "boolean", "label": "替换成功后删除 EdgeEver 本地资源", "default": false },
+      { "key": "sync-delete-remote", "type": "boolean", "label": "删除本地资源时同步删除图床文件（需 delete 权限）", "default": false },
+      { "key": "backup-before-replace", "type": "boolean", "label": "替换前自动备份笔记原文", "default": true },
+      { "key": "local-ref-pattern", "type": "text", "label": "本地图片引用识别规则（正则，留空自动识别）" },
+      { "key": "markdown-template", "type": "text", "label": "Markdown 链接模板", "default": "![{alt}]({url})" },
+      { "key": "max-file-size-mb", "type": "text", "label": "单文件大小上限（MB，0 表示不限制）", "default": "20" },
+      { "key": "include-non-images", "type": "boolean", "label": "同时上传非图片附件", "default": false }
     ]
   }
 }

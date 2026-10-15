@@ -65,7 +65,7 @@ test("自动上传关闭时，note.updated 不触发任何处理", async () => {
 
 // ---------- 3. 自动上传开启：处理后不循环 ----------
 test("自动上传开启时处理当前笔记，且替换后不重复上传", async () => {
-  const { ctx, state } = createMockContext({ settings: { autoUploadOnSave: true } });
+  const { ctx, state } = createMockContext({ settings: { "auto-upload-on-save": true } });
   const dispose = plugin.activate(ctx);
   try {
     await state.emit("note.updated", { note: { id: "note-1" } });
@@ -82,7 +82,7 @@ test("自动上传开启时处理当前笔记，且替换后不重复上传", as
 
 // ---------- 4. 自动上传范围：仅当前笔记 ----------
 test("自动上传范围为「仅当前笔记」时，其他笔记的更新被忽略", async () => {
-  const { ctx, state } = createMockContext({ settings: { autoUploadOnSave: true } });
+  const { ctx, state } = createMockContext({ settings: { "auto-upload-on-save": true } });
   const dispose = plugin.activate(ctx);
   try {
     await state.emit("note.updated", { note: { id: "other-note" } });
@@ -95,7 +95,7 @@ test("自动上传范围为「仅当前笔记」时，其他笔记的更新被�
 // ---------- 5. 自动上传范围：所有笔记（无编辑器时走 notes.update） ----------
 test("自动上传范围为「所有笔记」时处理非当前编辑器笔记", async () => {
   const { ctx, state } = createMockContext({
-    settings: { autoUploadOnSave: true, autoUploadScope: "all" },
+    settings: { "auto-upload-on-save": true, "auto-upload-scope": "all" },
     editorDoc: { noteId: "note-2", text: "# 其他笔记" },
   });
   const dispose = plugin.activate(ctx);
@@ -127,7 +127,7 @@ test("没有打开的编辑器时，通过 notes.update 写回", async () => {
 // ---------- 7. 删除本地资源 + 同步删除图床文件 ----------
 test("开启后删除本地资源并同步删除图床文件，记录被清理", async () => {
   const { ctx, state } = createMockContext({
-    settings: { deleteLocalAfterUpload: true, syncDeleteRemote: true },
+    settings: { "delete-local-after-upload": true, "sync-delete-remote": true },
   });
   const dispose = plugin.activate(ctx);
   try {
@@ -149,7 +149,7 @@ test("开启后删除本地资源并同步删除图床文件，记录被清理",
 
 // ---------- 8. 大小上限 ----------
 test("超过大小上限的文件被跳过且不上传", async () => {
-  const { ctx, state } = createMockContext({ settings: { maxFileSizeMB: 0.001 } });
+  const { ctx, state } = createMockContext({ settings: { "max-file-size-mb": 0.001 } });
   const dispose = plugin.activate(ctx);
   try {
     await state.runCommand("imgbed-upload-current-note");
@@ -164,7 +164,7 @@ test("超过大小上限的文件被跳过且不上传", async () => {
 // ---------- 9. 自定义 Markdown 模板 ----------
 test("自定义 Markdown 链接模板生效", async () => {
   const { ctx, state } = createMockContext({
-    settings: { markdownTemplate: '![{alt}]({url} "edgeever")' },
+    settings: { "markdown-template": '![{alt}]({url} "edgeever")' },
   });
   const dispose = plugin.activate(ctx);
   try {
@@ -181,7 +181,7 @@ test("自定义 Markdown 链接模板生效", async () => {
 // ---------- 10. 认证码鉴权 ----------
 test("认证码鉴权时使用 authCode 查询参数且不带 Token 头", async () => {
   const { ctx, state } = createMockContext({
-    settings: { authMode: "authCode", authCode: "my_code_123" },
+    settings: { "auth-mode": "authCode", "auth-code": "my_code_123" },
   });
   const dispose = plugin.activate(ctx);
   try {
@@ -266,7 +266,7 @@ test("未配置图床地址时给出提示且不发起请求", async () => {
 
 // ---------- 15. 自定义本地引用识别规则 ----------
 test("自定义 localRefPattern 后仅匹配的引用被处理", async () => {
-  const { ctx, state } = createMockContext({ settings: { localRefPattern: "^edgeever://" } });
+  const { ctx, state } = createMockContext({ settings: { "local-ref-pattern": "^edgeever://" } });
   const dispose = plugin.activate(ctx);
   try {
     await state.runCommand("imgbed-upload-current-note");
@@ -299,7 +299,7 @@ test("已有上传记录的资源复用链接，不重复上传", async () => {
 
 // ---------- 17. 非图片附件开关 ----------
 test("开启 includeNonImages 后上传 PDF 附件", async () => {
-  const { ctx, state } = createMockContext({ settings: { includeNonImages: true } });
+  const { ctx, state } = createMockContext({ settings: { "include-non-images": true } });
   const dispose = plugin.activate(ctx);
   try {
     await state.runCommand("imgbed-upload-current-note");
@@ -345,7 +345,7 @@ test("笔记删除后在开启同步删除时清理远端文件", async () => {
     assert.equal(state.fetchCalls.length, before, "默认关闭时笔记删除不触发远端删除");
 
     // 开启后再来一次
-    state.settings.syncDeleteRemote = true;
+    state.settings["sync-delete-remote"] = true;
     await state.emit("note.deleted", { noteId: "note-1" });
     const deleteCalls = state.fetchCalls.filter((c) => c.url.includes("/api/manage/delete/"));
     assert.equal(deleteCalls.length, 2, "开启后应删除该笔记上传过的 2 个图床文件");
