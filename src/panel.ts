@@ -1,7 +1,7 @@
 import { PluginContext, PluginNoteSummary, PluginResource } from "./types";
 import { ImgbedSettings, loadSettings, validateSettings } from "./settings";
 import { deleteFile, testConnection, uploadFile } from "./imgbed";
-import { isImageResource, resId, resName, resType } from "./markdown";
+import { isImageResource, resId, resName, resType, buildMarkdownLink, toLinkTemplate } from "./markdown";
 import { docNoteId, getEditorDoc, listNoteResources, listNotes, readResourceFile, writeNoteMarkdown } from "./notes";
 import { addRecord, listRecords, removeRecords, UploadRecord } from "./records";
 import { BackupEntry, getBackupMarkdown, listBackups, removeBackup } from "./backup";
@@ -189,7 +189,9 @@ export function registerPanel(ctx: PluginContext): () => void {
               }
               try {
                 const up = await uploadFile(ctx, s, f);
-                const md = `![${f.name}](${up.url})`;
+                const isImg = typeof f.type === "string" && f.type.startsWith("image/");
+                const tpl = isImg ? s.markdownTemplate : toLinkTemplate(s.markdownTemplate);
+                const md = buildMarkdownLink(tpl, { alt: f.name, url: up.url, name: f.name });
                 state.recent.unshift({ name: f.name, url: up.url, md });
                 try {
                   await addRecord(ctx, {

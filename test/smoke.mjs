@@ -304,7 +304,8 @@ test("开启 includeNonImages 后上传 PDF 附件", async () => {
   try {
     await state.runCommand("imgbed-upload-current-note");
     assert.equal(state.fetchCalls.length, 3, "开启后应上传 PDF 附件");
-    assert.ok(state.editorDoc.text.includes("![文档](https://img.test.com/file/doc.pdf)"));
+    assert.ok(state.editorDoc.text.includes("[文档](https://img.test.com/file/doc.pdf)"), "附件应使用超链接语法");
+    assert.ok(!state.editorDoc.text.includes("![文档]"), "附件不应使用图片语法（避免裂图）");
   } finally {
     dispose();
   }

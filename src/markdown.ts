@@ -194,6 +194,16 @@ export function buildMarkdownLink(template: string, vars: { alt: string; url: st
   return tpl.split("{alt}").join(vars.alt).split("{url}").join(vars.url).split("{name}").join(vars.name);
 }
 
+/**
+ * 由图片模板派生附件（非图片）模板：附件应渲染为可点击的超链接而非图片，
+ * 否则 ![alt](xxx.pdf) 会显示成裂图。做法是去掉图片模板开头的 "!"，
+ * 例如 ![{alt}]({url}) → [{alt}]({url})。
+ */
+export function toLinkTemplate(imageTemplate: string): string {
+  const tpl = imageTemplate && imageTemplate.includes("{url}") ? imageTemplate : "![{alt}]({url})";
+  return tpl.startsWith("!") ? tpl.slice(1) : tpl;
+}
+
 export interface Replacement {
   start: number;
   end: number;
@@ -249,10 +259,14 @@ export function computeReplacements(
     if (c.kind === "matched") {
       const url = opts.urlFor(c.resource);
       if (url) {
+        // 图片用图片模板（嵌入显示）；非图片附件用链接模板（可点击下载，避免裂图）
+        const template = isImageResource(c.resource)
+          ? opts.markdownTemplate
+          : toLinkTemplate(opts.markdownTemplate);
         edits.push({
           start: ref.start,
           end: ref.end,
-          text: buildMarkdownLink(opts.markdownTemplate, {
+          text: buildMarkdownLink(template, {
             alt: ref.alt,
             url,
             name: resName(c.resource),

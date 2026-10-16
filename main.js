@@ -208,6 +208,10 @@ function buildMarkdownLink(template, vars) {
   const tpl = template && template.includes("{url}") ? template : "![{alt}]({url})";
   return tpl.split("{alt}").join(vars.alt).split("{url}").join(vars.url).split("{name}").join(vars.name);
 }
+function toLinkTemplate(imageTemplate) {
+  const tpl = imageTemplate && imageTemplate.includes("{url}") ? imageTemplate : "![{alt}]({url})";
+  return tpl.startsWith("!") ? tpl.slice(1) : tpl;
+}
 function applyEdits(text, edits) {
   if (!edits.length) return text;
   const sorted = [...edits].sort((a, b) => a.start - b.start);
@@ -235,10 +239,11 @@ function computeReplacements(text, resources, opts) {
     if (c.kind === "matched") {
       const url = opts.urlFor(c.resource);
       if (url) {
+        const template = isImageResource(c.resource) ? opts.markdownTemplate : toLinkTemplate(opts.markdownTemplate);
         edits.push({
           start: ref.start,
           end: ref.end,
-          text: buildMarkdownLink(opts.markdownTemplate, {
+          text: buildMarkdownLink(template, {
             alt: ref.alt,
             url,
             name: resName(c.resource)
@@ -972,7 +977,9 @@ function registerPanel(ctx) {
               }
               try {
                 const up = await uploadFile(ctx, s, f);
-                const md = `![${f.name}](${up.url})`;
+                const isImg = typeof f.type === "string" && f.type.startsWith("image/");
+                const tpl = isImg ? s.markdownTemplate : toLinkTemplate(s.markdownTemplate);
+                const md = buildMarkdownLink(tpl, { alt: f.name, url: up.url, name: f.name });
                 state.recent.unshift({ name: f.name, url: up.url, md });
                 try {
                   await addRecord(ctx, {
